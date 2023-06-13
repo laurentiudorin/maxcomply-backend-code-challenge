@@ -1,0 +1,34 @@
+services:
+
+  # nginx - server
+  web-server:
+    build:
+      dockerfile: Docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+
+  # php -
+  web-api:
+    build:
+      dockerfile: symfony_backend/Dockerfile
+    volumes:
+      - ./symfony_backend:/var/www/html/web-api
+
+  # mysql
+  database:
+    image: mysql:latest
+    volumes:
+      - mysqldata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: main
+      MYSQL_USER: dorin
+      MYSQL_PASSWORD: dorin
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3306:3306'
+    restart: unless-stopped
+
+  # redis
+
+volumes:
+  mysqldata:
